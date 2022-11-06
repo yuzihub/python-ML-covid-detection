@@ -2,7 +2,7 @@
 The dataset used in this project can be found [here](https://www.kaggle.com/datasets/asraf047/covid19-pneumonia-normal-chest-xray-pa-dataset), which includes
 images of X-Ray scans of 1525 patients with no covid diagnosis as well as X-Ray scans of around 400 patients with covid diagnosis. The imbalance between the two classes has been addressed in the dataset by including augmented images of patients with covid diagnosis. The augmented images have random zooms, some rotations and flips. In the end both the non-covid and covid classes have 1525 members each. Scaling and normalization operations are also applied to the images for better CNN performance. One from-scratch model and one transfer learning model was used and evaluated on the dataset.
 
-## From-Scratch Model
+## 1) From-Scratch Model
 
 [Keras API](https://keras.io/) was used to build a model from scratch. The network architecture can be summarized as follows:
 - Block 1:
@@ -65,7 +65,7 @@ the one we will use for the classification.
 The results from the random search, the best 3 networks out of the 50 trials we ran, and
 the evaluation of the best network on the test set will be presented in this section (see table 2).
 
-####Table 2: Best three CNN structures tuned with random search
+#### Table 2: Best three CNN structures tuned with random search
 
 |  | Results Summary-Showing Top 3 Trials |  |
 |---------------------|-----------------|-------------------------------------|
@@ -74,3 +74,30 @@ the evaluation of the best network on the test set will be presented in this sec
 Figures 1 and 2 are the graphs and the statistics for the best network. Table 3 illustrates the
 classification performance on the test set for from-scratch method.
 
+![My Image](images/from_scratch_best_model_loss_epoch.PNG)
+
+#### Table 3: Classification Performance On the Test Set
+
+|  | precision | recall | f1-score | support |
+|--|--|--|--|--|
+| 0 | 0.97 | 0.96 | 0.96 | 155 |
+| 1 | 0.96 | 0.97 | 0.96 | 150 |
+
+## 2) Transfer Learning
+
+For the transfer learning algorithm, we used resnet18 and instead of random
+initialization of the weights, we used the weights in the pretrained network. Although our dataset
+is relatively small, we expected resnet18 to perform very well on it since the network has been
+trained on millions of images. Table 4 represents the classification performance on the test set for
+Resnet18.
+
+#### Table 4: Resnet18 Classification Performance On the Test Set
+|  | precision | recall | f1-score |
+|--|--|--|--|
+| 0 | 0.99 | 0.99 | 0.99 |
+| 1 | 0.99 | 0.99 | 0.99 |
+| accuracy |  |  | 0.99 |
+| macro avg. | 0.99 | 0.99 | 0.99 |
+| weighted avg. | 0.99 | 0.99 | 0.99 |
+
+Resnet18 was able to classify the covid and non-covid patients almost without misclassification, however, it took longer to train it when compared to our from scratch model due to its depth and complexity.
